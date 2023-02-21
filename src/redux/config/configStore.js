@@ -1,12 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import todoSlice from '../modules/todoSlice';
-
+import fetchtodoSlice from '../modules/todoSlice';
+import { posttodoSlice } from '../modules/todoSlice';
+import { deletetodoSlice } from '../modules/todoSlice';
 // const rootReducer = combineReducers({});
 // const store = createStore(rootReducer);
 
 const store = configureStore({
   reducer: {
-    todo: todoSlice,
+    fetchtodoSlice,
+    posttodoSlice,
+    deletetodoSlice,
   },
 });
 

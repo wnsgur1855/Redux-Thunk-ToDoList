@@ -1,20 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { StBtn } from './Home';
 import { useEffect } from 'react';
-import axios from 'axios';
-import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import api from '../axios/api';
-
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { __deleteTodo } from '../redux/modules/todoSlice';
+import { __fetchTodo } from '../redux/modules/todoSlice';
+import { useSelector } from 'react-redux';
+import { StBtn } from '../components/button';
+import { backButtonHandler } from '../components/button';
 const StLargeBox = styled.div`
   width: 80%;
   height: 500px;
-
   margin-left: 30px;
   border-radius: 30px;
   border: 3px black solid;
 `;
+
 //버튼 컴포넌트 하나론 힘들 것 같아요!
 const StMapInputBox = styled.button`
   width: 70%;
@@ -37,47 +38,52 @@ const StMapLargeInputBox = styled.div`
 `;
 
 function List() {
-  const [todos, setTodos] = useState(null);
-  //   const todos = useSelector((state) => {
-  //     return state.todo.todos;
-  //   });
-  //   console.log(todos);
+  //useSelector----------------------------------------------------------------
+  const data = useSelector((state) => state.fetchtodoSlice.todos);
+  console.log(' state data', data);
+  //useNavigate--------------------------------
+  const navigate = useNavigate();
+  //useDispatch--------------------------------------------------
+  const dispatch = useDispatch();
+  //useEffect로 서버로부터 값 가져오기(api호출)-------------------------------------------------------------------------------------
+  useEffect(() => {
+    dispatch(__fetchTodo());
+  }, []);
+  //useEffect는 사용하면 해당 컴포넌트(List)가 마운트될 때, 서버로부터 데이터를 받아오기 위해__fetchtodo()함수를 실행하고있다
+  //의존성배열(두번째인자)로 빈 배열을 뒀기 때문에 마운트 될 때만 함수가 실행하도록 설정.(빈 배열일 땐 컴포넌트가 처음 마운트 될 때 한 번만 실행)
+  //이렇게 하면 컴포넌트가 업데이트 될 때는 useEffect가 실행되지 않고, 컴포넌트가 처음으로 마운트 될 때 한번만 실행되도록 할 수 있다.
+  //->여기서 역할 : 컴포넌트가 마운트될 때 서버로부터 데이터를 받아와서 store에 저장하는 역할, 그 후 데이터를 받아올 필요가 없어서(의존성배열에 값 ㄴ)
+  //?마운트란? : 컴포넌트가 브라우저상에 나타나는 것(처음으로 dom에 렌더링되어 보이게 되는 것)
   //get요청방식(instance적용)-------------------------------------------------------------------------------------
-  const fetchTodos = async () => {
-    //구조분해할당?
-    //axios는 promise를 기초로 http통신을 하는 라이브러리
-    //get방식으로 axios로 db데이터 가져오기
-    const { data } = await api.get('/todos');
-    console.log('data', data);
-    setTodos(data);
-  };
+  //   const fetchTodos = async () => {
+  //     await dispatch(__fetchTodo());
+  //     //console.log('data', data);
+  //   };
+  //->이거 사용하면 데이터를 반환하기 전에(데이터를 완전히 받아지지 않은 상태에서)  dispatch함수가 실행되어 데이터가 정상적으로 가져와지지않고 data는 undefined
   //delete요청방식(instance적용)-----------------------------------------------------------------------------------------
   const deleteButtonHandler = async (id) => {
-    //-->인자 이름 상관 ㄴ
-    const data = await api.delete(`/todos/${id}`); //db에서 데이터 지우기만함 stae가 변경 ㄴ
-    console.log('data---------', data); //const data 한 이유는 그냥 찍어보려고 임의로 변수 만든것
-    setTodos(
-      todos.filter((item) => {
-        return item.id !== id; //오탈자부분
-      })
-    ); //-->새로운 배열을 리턴하니 불변성 상관 ㄴ
+    await dispatch(__deleteTodo(id));
+    //dispatch(__deleteTodo(id));
+    //console.log(id);
+    //window.location.reload();
+    await dispatch(__fetchTodo()); //--------------->이게 있어버리니까 리듀서에 문제가 있어도 삭제가 되어버리네,,
   };
-  //useEffect로 db로부터 값 가져오기-------------------------------------------------------------------------------------
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-  //console.log(fetchTodos)
+
+  const backButtonHandler = () => {
+    alert('빽');
+    navigate('/writer');
+  };
+
   //-------------------------------------------------------------------------------------
-  //useNavigate
-  const navigate = useNavigate();
-  //   if (!todos) return <div>"loading"</div>;
+
   return (
     <>
+      <StBtn onClick={backButtonHandler}>빽!!</StBtn>
       <div style={{ marginLeft: '30px' }}>나의 할 일</div>
       <StLargeBox>
         <div>
-          {todos?.map((item) => {
-            console.log(item);
+          {data?.map((item) => {
+            //console.log(item.id);
             return (
               <StMapLargeInputBox key={item.id}>
                 <StMapInputBox

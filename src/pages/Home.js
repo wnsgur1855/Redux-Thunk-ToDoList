@@ -1,20 +1,12 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { StBtn } from '../components/button';
 
 const Stdiv = styled.div`
   font-size: large;
   margin-left: 20px;
   margin-bottom: 20px;
-`;
-export const StBtn = styled.button`
-  width: 100%;
-  height: 50px;
-  background-color: wheat;
-  border: none;
-  border-radius: 20px;
-
-  text-align: center;
 `;
 
 function Home() {

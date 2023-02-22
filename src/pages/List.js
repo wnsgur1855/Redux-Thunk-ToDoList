@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { __deleteTodo } from '../redux/modules/TodoSlice';
-import { __fetchTodo } from '../redux/modules/TodoSlice';
+import { __deleteTodo } from '../redux/modules/todoSlice';
+import { __fetchTodo } from '../redux/modules/todoSlice';
 import { StBtn } from '../components/button';
 import Delete from '../components/Get.Delete';
 

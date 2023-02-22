@@ -2,7 +2,7 @@ import React from 'react';
 import useInput from '../hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { __postTodo } from '../redux/modules/TodoSlice';
+import { __postTodo } from '../redux/modules/todoSlice';
 import { StBtn } from '../components/button';
 import styled from 'styled-components';
 

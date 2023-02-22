@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { __defetchTodo } from '../redux/modules/DetailSlice';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
-import { __modifyTodo } from '../redux/modules/TodoSlice';
+import { __modifyTodo } from '../redux/modules/todoSlice';
 import { useNavigate } from 'react-router-dom';
 import { StCenterDiv } from '../components/Style';
 

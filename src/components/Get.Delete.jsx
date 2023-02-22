@@ -2,8 +2,8 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { __deleteTodo } from '../redux/modules/TodoSlice';
-import { __fetchTodo } from '../redux/modules/TodoSlice';
+import { __deleteTodo } from '../redux/modules/todoSlice';
+import { __fetchTodo } from '../redux/modules/todoSlice';
 import { useSelector } from 'react-redux';
 import { StCenterDiv, StMapInputBox, StMapLargeInputBox } from './Style';
 

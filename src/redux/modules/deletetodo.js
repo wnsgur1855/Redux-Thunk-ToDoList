@@ -6,10 +6,9 @@ export const __deleteTodo = createAsyncThunk('deleteTodo/deleteTodos', async (id
   try {
     await api.delete(`http://localhost:4001/todos/${id}`);
     console.log(id);
-    return thunkApi.fulfillWithValue(id); //이 메소드를 사용하여 액션 객체를 반환. 반환된 액션 객체는 __deleteTodo.fulfilled리듀서 함수에서 처리된다
+    return thunkApi.fulfillWithValue(id);
   } catch (error) {
     thunkApi.rejectWithValue();
-    //console.log('error', error);
   }
 });
 

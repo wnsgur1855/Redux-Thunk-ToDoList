@@ -7,7 +7,7 @@ import { __deleteTodo } from '../redux/modules/deletetodo';
 import { __fetchTodo } from '../redux/modules/todoSlice';
 import { useSelector } from 'react-redux';
 import { StBtn } from '../components/button';
-import { backButtonHandler } from '../components/button';
+
 const StLargeBox = styled.div`
   width: 80%;
   height: 500px;
@@ -54,7 +54,7 @@ function List() {
   const deleteButtonHandler = async (id) => {
     await dispatch(__deleteTodo(id));
     //window.location.reload();
-    await dispatch(__fetchTodo()); //--------------->이게 있어버리니까 리듀서에 문제가 있어도 삭제가 되어버리네,,
+    await dispatch(__fetchTodo());
   };
 
   const backButtonHandler = () => {

@@ -9,10 +9,9 @@ export const __modifyTodo = createAsyncThunk('modifyTodo/modifyTodo', async (pay
     });
     console.log('payload모디파이슬라이스', payload);
     console.log('response페이로드 리스폰스', response);
-    return thunkApi.fulfillWithValue(response.data); //이 메소드를 사용하여 액션 객체를 반환. 반환된 액션 객체는 __deleteTodo.fulfilled리듀서 함수에서 처리된다
+    return thunkApi.fulfillWithValue(response.data);
   } catch (error) {
     return thunkApi.rejectWithValue(error.message);
-    //console.log('error', error);
   }
 });
 

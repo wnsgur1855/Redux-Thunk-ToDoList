@@ -10,38 +10,15 @@ import api from '../../axios/api';
 
 //try catch를 쓰는 이유 비동기 서버통신이 100%라는 보장이 없어서-->3가지 thunk를 정의할거다
 // 조회 요청방식(todo목록 조회thunk)
-export const __fetchTodo = createAsyncThunk('fetchTodo', async (payload, thunkAPI) => {
+export const __fetchTodo = createAsyncThunk('fetchTodo/fetchTodo', async (payload, thunkAPI) => {
   //여기서 이름은 콘솔의 타입 이름으로뜬다
   //비동기 액선을 디스패치하고 디스패치 함수를 사용하여 다른 액션을 디스패치
   try {
     const { data } = await api.get('http://localhost:4001/todos'); //구조분해할당하는 이유?
-    console.log(data);
+    //console.log(data);
     return thunkAPI.fulfillWithValue(data);
   } catch (error) {
     thunkAPI.rejectWithValue();
-  }
-});
-
-//추가 요청방식(todo 목록 추가)
-export const __postTodo = createAsyncThunk('postTodos', async (payload, thunkAPI) => {
-  try {
-    const { data } = await api.post('http://localhost:4001/todos', payload);
-    console.log(data);
-    return thunkAPI.fulfillWithValue(data); // -->기존의 안 됐던 코드(새로고침) : return thunkAPI.fulfillWithValue(response.data);
-  } catch (error) {
-    thunkAPI.rejectWithValue();
-    //console.log('error', error);
-  }
-});
-//삭제요청방식(todo목록 삭제--api-DELETE요청을 수행)
-export const __deleteTodo = createAsyncThunk('deleteTodos', async (id, thunkApi) => {
-  try {
-    await api.delete(`http://localhost:4001/todos/${id}`);
-    console.log(id);
-    return thunkApi.fulfillWithValue(id); //이 메소드를 사용하여 액션 객체를 반환. 반환된 액션 객체는 __deleteTodo.fulfilled리듀서 함수에서 처리된다
-  } catch (error) {
-    thunkApi.rejectWithValue();
-    //console.log('error', error);
   }
 });
 
@@ -66,7 +43,7 @@ const fetchtodoSlice = createSlice({
     //스토어의 상태를 업데이투
     builder
       .addCase(__fetchTodo.fulfilled, (state, action) => {
-        console.log(action.payload);
+        //console.log('action.payload이 값이 get의 payload : ', action.payload);
         state.todos = action.payload;
         state.isLoading = false;
         state.isError = false;
@@ -85,60 +62,7 @@ const fetchtodoSlice = createSlice({
   },
 });
 
-export const posttodoSlice = createSlice({
-  name: 'fetchTodo',
-  initialState: initialState,
-  reducers: {}, //-->미들웨어에서 이미 처리가 됐으니 안 해줘도 된다?
-  extraReducers: (builder) => {
-    builder
-      .addCase(__postTodo.fulfilled, (state, action) => {
-        console.log(state);
-        state.todos.push(action.payload);
-
-        state.isLoading = false;
-        state.isError = false;
-        state.error = null;
-      })
-      .addCase(__postTodo.pending, (state) => {
-        console.log(state);
-        state.isLoading = true;
-        state.isError = false;
-        state.error = null;
-      })
-      .addCase(__postTodo.rejected, (state, action) => {
-        console.log(state);
-        state.isLoading = false;
-        state.isError = true;
-        state.error = action.error;
-      });
-  },
-});
 //
-export const deletetodoSlice = createSlice({
-  name: 'fetchTodo',
-  initialState: initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(__deleteTodo.fulfilled, (state, action) => {
-        console.log(action);
-        state.todos = action.payload;
-        state.isLoading = false;
-        state.isError = false;
-        state.error = null;
-      })
-      .addCase(__deleteTodo.pending, (state) => {
-        state.isLoading = true;
-        state.isError = false;
-        state.error = null;
-      })
-      .addCase(__deleteTodo.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.error = action.error;
-      });
-  },
-});
 
-export const {} = posttodoSlice.actions;
+//export const {} = posttodoSlice.actions;
 export default fetchtodoSlice.reducer; //default했으니 아무 이름이나 상관 ㄴ

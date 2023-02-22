@@ -1,19 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import fetchtodoSlice from '../modules/todoSlice';
-import posttodoSlice from '../modules/posttodo';
-import deletetodoSlice from '../modules/deletetodo';
-import defetchTodoSlice from '../modules/detailGet';
-import modifyTodoSlice from '../modules/modifySlice';
-// const rootReducer = combineReducers({});
-// const store = createStore(rootReducer);
+import fetchtodoSlice from '../modules/TodoSlice';
+import defetchTodoSlice from '../modules/DetailSlice';
 
 const store = configureStore({
   reducer: {
     fetchtodoSlice,
-    posttodoSlice,
-    deletetodoSlice,
     defetchTodoSlice,
-    modifyTodoSlice,
   },
 });
 

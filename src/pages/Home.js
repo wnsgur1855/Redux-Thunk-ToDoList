@@ -1,21 +1,32 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { StBtn } from '../components/button';
+import { StCenterDiv } from '../components/Style';
 
 const Stdiv = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
   font-size: large;
-  margin-left: 20px;
-  margin-bottom: 20px;
+  width: 70%;
+  margin-bottom: 300px;
+  background-color: aqua;
+  border-style: dashed;
+`;
+
+const Stform = styled.form`
+  flex-direction: column;
+  display: flex;
+  gap: 10px;
 `;
 
 function Home() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ marginTop: '50px' }}>
+    <StCenterDiv style={{ marginTop: '50px' }}>
       <Stdiv>무엇을 할까용</Stdiv>
-      <form
-        style={{ flexDirection: 'column', display: 'flex', gap: '10px' }}
+      <Stform
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -23,7 +34,6 @@ function Home() {
         <StBtn
           onClick={() => {
             navigate('/writer');
-            alert('할 일을 기록하러 갑시다');
           }}
         >
           할 일 기록하기
@@ -31,13 +41,12 @@ function Home() {
         <StBtn
           onClick={() => {
             navigate('/list');
-            alert('내 할일로 갑시다');
           }}
         >
           ToDoList
         </StBtn>
-      </form>
-    </div>
+      </Stform>
+    </StCenterDiv>
   );
 }
 

@@ -1,24 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { __defetchTodo } from '../redux/modules/detailGet';
+import { __defetchTodo } from '../redux/modules/DetailSlice';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
-import { __modifyTodo } from '../redux/modules/modifySlice';
+import { __modifyTodo } from '../redux/modules/TodoSlice';
+import { useNavigate } from 'react-router-dom';
+import { StCenterDiv } from '../components/Style';
 
-const StCenterDiv = styled.div`
-  flex-direction: column;
+const StForm = styled.form`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  width: 80vw;
+  height: 80vh;
 `;
 
-const StModifyBox = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 2px black;
+const StWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StModifyInputBox = styled.input`
+  display: flex;
+  margin-bottom: 300px;
+  border-style: dashed;
+  width: 400px;
+  height: 30px;
+`;
+
+const StModifyTEXTBox = styled.div`
+  width: 400px;
+  height: 30px;
+  border-style: ridge;
+  display: flex;
+  align-items: center;
   margin-top: 20px;
+`;
+
+const StModifyButton = styled.button`
+  width: 60px;
+  height: 32px;
+  margin: 1px 0px 0px 20px;
+  border-style: groove;
+  background-color: #89f5a7;
+  &:hover {
+    color: blueviolet;
+    background-color: antiquewhite;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
 `;
 
 function Detail() {
@@ -28,33 +59,42 @@ function Detail() {
   const params = useParams();
   //useDispatch사용    --------------------------------------
   const dispatch = useDispatch();
+  //useNavigate사용----------------------------
+  const navigate = useNavigate();
   //store에서 데이터 가져오기--------------------------------------
   const data = useSelector((state) => {
     return state.defetchTodoSlice.todo;
   });
-  //dispatch가 시행될 때마다 mount
   useEffect(() => {
-    const result = dispatch(__defetchTodo(params.id));
-    //console.log(result);
+    dispatch(__defetchTodo(params.id));
   }, [dispatch]);
   //수정 핸들러
   const modifyHandler = async (id, title) => {
     const test = dispatch(__modifyTodo({ id, title }));
-    console.log(test);
-    dispatch(__defetchTodo(params.id));
-    alert('수정완료...');
+    window.location.reload();
+    //dispatch(__defetchTodo(params.id));
   };
 
   return (
     <StCenterDiv>
-      <input
-        value={change.change}
-        onChange={onchangeHandler}
-        placeholder="수정좀 하고 살아라"
-        required
-      />
-      <button onClick={() => modifyHandler(params.id, change)}>수졍하기</button>
-      <StModifyBox>{data.title}</StModifyBox>
+      <StForm
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
+        <StWrapper>
+          <StModifyInputBox
+            value={change.change}
+            onChange={onchangeHandler}
+            placeholder="수정은 title만 되오니 양해 부탁드릴게요😌"
+          />
+          <StModifyButton onClick={() => modifyHandler(params.id, change)}>수졍</StModifyButton>
+          <StModifyButton onClick={() => navigate('/list')}>back</StModifyButton>
+        </StWrapper>
+        <StModifyTEXTBox>
+          {data.id} : {data.title}
+        </StModifyTEXTBox>
+      </StForm>
     </StCenterDiv>
   );
 }

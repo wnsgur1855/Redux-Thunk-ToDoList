@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../axios/api';
+import instance from '../../axios/api';
 
 export const __defetchTodo = createAsyncThunk(
   'defetchTodo/defetchTodo',
   async (payload, thunkAPI) => {
     try {
-      const response = await api.get(`/todos/${payload}`);
+      const response = await instance.get(`/todos/${payload}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue();

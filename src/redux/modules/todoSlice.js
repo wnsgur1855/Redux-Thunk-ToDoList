@@ -1,11 +1,11 @@
 //리덕스 툴킷을 사용하는 이유? = boilerplate(변화없이 반복되는 코드)를 최소화하고, 간결한 redux코드를 위해
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../../axios/api';
+import instance from '../../axios/api';
 
 //get요청방식
 export const __fetchTodo = createAsyncThunk('fetchTodo/fetchTodo', async (payload, thunkAPI) => {
   try {
-    const { data } = await api.get('/todos');
+    const { data } = await instance.get('/todos');
     //console.log(data);
     return thunkAPI.fulfillWithValue(data);
   } catch (error) {
@@ -14,14 +14,14 @@ export const __fetchTodo = createAsyncThunk('fetchTodo/fetchTodo', async (payloa
 });
 //추가 요청방식(todo 목록 추가)
 export const __postTodo = createAsyncThunk('posttodo/postTodos', async (payload, thunkAPI) => {
-  const response = await api.post('/todos', payload);
+  const response = await instance.post('/todos', payload);
   console.log(response);
   return thunkAPI.fulfillWithValue(response.data);
 });
 //삭제요청방식(todo목록 삭제--api-DELETE요청을 수행)
 export const __deleteTodo = createAsyncThunk('deleteTodo/deleteTodos', async (id, thunkApi) => {
   try {
-    await api.delete(`/todos/${id}`);
+    await instance.delete(`/todos/${id}`);
     return thunkApi.fulfillWithValue(id);
   } catch (error) {
     thunkApi.rejectWithValue();
@@ -30,7 +30,7 @@ export const __deleteTodo = createAsyncThunk('deleteTodo/deleteTodos', async (id
 //수정 요청방식(todo수정)
 export const __modifyTodo = createAsyncThunk('modifyTodo/modifyTodo', async (payload, thunkApi) => {
   try {
-    const response = await api.patch(`/todos/${payload.id}`, {
+    const response = await instance.patch(`/todos/${payload.id}`, {
       title: payload.title,
     });
     return thunkApi.fulfillWithValue(response.data);

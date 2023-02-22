@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { __deleteTodo } from '../redux/modules/todoSlice';
+import { __deleteTodo } from '../redux/modules/deletetodo';
 import { __fetchTodo } from '../redux/modules/todoSlice';
 import { useSelector } from 'react-redux';
 import { StBtn } from '../components/button';
@@ -40,14 +40,15 @@ const StMapLargeInputBox = styled.div`
 function List() {
   //useSelector----------------------------------------------------------------
   const data = useSelector((state) => state.fetchtodoSlice.todos);
-  console.log(' state data', data);
+  console.log(' state data', data); //??
   //useNavigate--------------------------------
   const navigate = useNavigate();
   //useDispatch--------------------------------------------------
   const dispatch = useDispatch();
   //useEffect로 서버로부터 값 가져오기(api호출)-------------------------------------------------------------------------------------
   useEffect(() => {
-    dispatch(__fetchTodo());
+    const result = dispatch(__fetchTodo());
+    console.log(result);
   }, []);
   //useEffect는 사용하면 해당 컴포넌트(List)가 마운트될 때, 서버로부터 데이터를 받아오기 위해__fetchtodo()함수를 실행하고있다
   //의존성배열(두번째인자)로 빈 배열을 뒀기 때문에 마운트 될 때만 함수가 실행하도록 설정.(빈 배열일 땐 컴포넌트가 처음 마운트 될 때 한 번만 실행)

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createAdd } from '../redux/modules/todoSlice';
 import api from '../axios/api';
-import { __postTodo } from '../redux/modules/todoSlice';
+import { __postTodo } from '../redux/modules/posttodo';
 
 const Stp = styled.p`
   font-size: x-large;

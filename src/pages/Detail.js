@@ -1,51 +1,73 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'; // useParams 훅 import
 import api from '../axios/api';
+import { __defetchTodo } from '../redux/modules/detailGet';
+import styled from 'styled-components';
+import useInput from '../hooks/useInput';
+import { __modifyTodo } from '../redux/modules/modifySlice';
+
+const StDivBodx = styled.div`
+  width: 70px;
+  height: 30px;
+  border: 3px black;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const StCenterDiv = styled.div`
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
 
 function Detail() {
-  const { id } = useParams(); // useParams 훅을 이용하여 id 값을 가져옴
-  const [data, setData] = useState(null); // state 설정
-  const [change, setChange] = useState({
-    //수정할 input
-    title: '',
+  const [change, onchangeHandler] = useInput({});
+
+  //url파라미터 값 가져오기 ------------------------------------------
+  const params = useParams();
+  console.log(params);
+  //useDispatch사용    --------------------------------------
+  const dispatch = useDispatch();
+  //store에서 데이터 가져오기--------------------------------------
+  const data = useSelector((state) => {
+    //console.log(state);
+    //console.log(state.defetchTodoSlice.todo);
+    return state.defetchTodoSlice.todo;
   });
-  //console.log(change);
-  //get함수로 데이터 요청하기------------------------------------------------------------------------
-  const fetchTodo = async () => {
-    const { data } = await api.get(`/todos/${id}`); // id 값을 이용하여 해당 id에 대한 데이터만 불러옴
-    setData(data); // state 업데이트
-  };
-  //get함수로 데이터 요청한 것 실행시키기------------------------------------------------------------------------
+  //dispatch가 시행될 때마다 mount
   useEffect(() => {
-    fetchTodo();
-  }, [id]);
-  //patch로 db수정하기요청-------------------------------------------------------------------------------------------------
-  const changeButtonHandler = async () => {
-    //state로 이미 값을 갖고 있어서 인자로 안 받아도 된다. 밑의 인자도 no필요
-    alert('수정이 되었씀미다?');
-    const data = await api.patch(`/todos/${id}`, {
-      title: change,
-    }); //,뒤에는 어떻게 바꿔줄지를 적으면 된다 (객체형태이므로 형식 맞춰서)
-    //원래같으면 $에서 아이디를 찾아서 title을 찾아서 change로 바꾼다 ==하지만 지금은 id에 들어와있다는 거
-    setChange(change);
-    console.log('---data--', data);
-  };
-  //input(onchange) 함수-------------------------------------------------------------------------------------------------
-  const onchangeHandler = (e) => {
-    setChange(e.target.value);
+    const result = dispatch(__defetchTodo(params.id));
+    //console.log(result);
+  }, [dispatch]);
+
+  //   const founddata = data.find((item) => {
+  //     console.log(params);
+  //     return item.id === Number(params);
+  //   });
+
+  //수정 핸들러
+  const modifyHandler = async (id, title) => {
+    const test = dispatch(__modifyTodo({ id, title }));
+    console.log(test);
+    dispatch(__defetchTodo(params.id));
+    alert('수정완료...');
   };
   return (
-    <>
+    <StCenterDiv>
       <input
         value={change.change}
         onChange={onchangeHandler}
         placeholder="수정좀 하고 살아라"
         required
       />
-      <button onClick={changeButtonHandler}>수졍하기</button>
-      <div>{data?.title}</div>
-    </>
+      <button onClick={() => modifyHandler(params.id, change)}>수졍하기</button>
+      <div>{data.title}</div>
+    </StCenterDiv>
   );
 }
 

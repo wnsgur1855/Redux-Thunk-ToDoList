@@ -10,9 +10,6 @@ const Stdiv = styled.div`
 `;
 
 function Home() {
-  //     const data = useSelector((state) => {
-  //     return state
-  // })
   const navigate = useNavigate();
 
   return (

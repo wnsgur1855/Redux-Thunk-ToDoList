@@ -44,12 +44,6 @@ function Detail() {
     const result = dispatch(__defetchTodo(params.id));
     //console.log(result);
   }, [dispatch]);
-
-  //   const founddata = data.find((item) => {
-  //     console.log(params);
-  //     return item.id === Number(params);
-  //   });
-
   //수정 핸들러
   const modifyHandler = async (id, title) => {
     const test = dispatch(__modifyTodo({ id, title }));
@@ -57,6 +51,7 @@ function Detail() {
     dispatch(__defetchTodo(params.id));
     alert('수정완료...');
   };
+
   return (
     <StCenterDiv>
       <input

@@ -1,16 +1,6 @@
 {
   "todos": [
     {
-      "title": "ㅓ",
-      "content": "ㅓ",
-      "id": 12
-    },
-    {
-      "title": "ㅇㅇ",
-      "content": "ㅇ",
-      "id": 13
-    },
-    {
       "title": "ㅇ",
       "content": "ㅇ",
       "id": 14
@@ -29,6 +19,11 @@
       "title": "ㅓㅓ",
       "content": "ㅓㅓ",
       "id": 17
+    },
+    {
+      "title": "d",
+      "content": "d",
+      "id": 18
     }
   ]
 }
